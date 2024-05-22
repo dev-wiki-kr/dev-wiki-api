@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmConfigService } from './configs/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
     }),
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
