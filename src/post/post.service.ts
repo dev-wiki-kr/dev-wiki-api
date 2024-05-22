@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -12,10 +17,18 @@ export class PostService {
   ) {}
 
   async create(createPostDto: CreatePostDto) {
-    const newPost = this.postRepository.create(createPostDto);
-    await this.postRepository.insert(newPost);
+    try {
+      const newPost = this.postRepository.create(createPostDto);
+      await this.postRepository.insert(newPost);
 
-    return newPost;
+      return newPost;
+    } catch (err) {
+      if (err.code === '23505') {
+        throw new ConflictException('존재하는 게시물 id입니다.');
+      }
+
+      throw new InternalServerErrorException();
+    }
   }
 
   async findAll() {
