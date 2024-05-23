@@ -21,9 +21,7 @@ jobs:
           key: ${{ secrets.AWS_EC2_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu/dev-wiki && git pull origin main
-
-            && echo "DB_HOST=${{ secrets.DB_HOST }}" \
+            cd /home/ubuntu/dev-wiki && git pull origin main && echo "DB_HOST=${{ secrets.DB_HOST }}" \
             "DB_NAME=${{ secrets.DB_NAME }}" \
             "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
             "DB_PORT=${{ secrets.DB_PORT }}" \
@@ -32,9 +30,7 @@ jobs:
             "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" \
             "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" \
             "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" \
-            >> .env.production
-
-            && echo "DB_HOST=${{ secrets.DB_HOST }}" \
+            >> .env.production && echo "DB_HOST=${{ secrets.DB_HOST }}" \
             "DB_NAME=${{ secrets.DB_NAME }}" \
             "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
             "DB_PORT=${{ secrets.DB_PORT }}" \
@@ -43,7 +39,4 @@ jobs:
             "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" \
             "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" \
             "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" \
-            >> .env.development
-
-            && docker-compose down
-            && docker-compose up -d
+            >> .env.development && docker-compose down && docker-compose up -d
