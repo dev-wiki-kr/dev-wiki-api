@@ -23,7 +23,7 @@ jobs:
           script: |
             cd /home/ubuntu/dev-wiki && git pull origin main
 
-            echo "DB_HOST=${{ secrets.DB_HOST }}" \
+            && echo "DB_HOST=${{ secrets.DB_HOST }}" \
             "DB_NAME=${{ secrets.DB_NAME }}" \
             "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
             "DB_PORT=${{ secrets.DB_PORT }}" \
@@ -34,7 +34,7 @@ jobs:
             "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" \
             >> .env.production
 
-            echo "DB_HOST=${{ secrets.DB_HOST }}" \
+            && echo "DB_HOST=${{ secrets.DB_HOST }}" \
             "DB_NAME=${{ secrets.DB_NAME }}" \
             "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
             "DB_PORT=${{ secrets.DB_PORT }}" \
@@ -45,5 +45,5 @@ jobs:
             "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" \
             >> .env.development
 
-            docker-compose down
-            docker-compose up -d
+            && docker-compose down
+            && docker-compose up -d
