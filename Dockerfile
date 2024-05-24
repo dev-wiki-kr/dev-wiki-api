@@ -35,4 +35,4 @@ COPY --from=builder /app/pnpm-lock.yaml ./
 
 EXPOSE 3000
 
-CMD pnpm migration:run && node dist/main
+CMD pnpm typeorm migration:run -d dist/migrations/ormconfig.js && node dist/main
