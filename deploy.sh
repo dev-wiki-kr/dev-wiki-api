@@ -20,6 +20,8 @@ echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.development
 echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.development
 echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.development
 
+pnpm migration:run
+
 docker-compose down
 
 docker-compose up -d
