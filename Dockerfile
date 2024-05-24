@@ -24,6 +24,8 @@ FROM node:18-alpine AS runner
 
 WORKDIR /app
 
+RUN npm install -g pnpm
+
 COPY .env.development ./
 COPY .env.production ./
 COPY --from=builder /app/dist ./dist
