@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd /home/ubuntu/dev-wiki
-
 echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env.production
 echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env.production
 echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env.production
@@ -21,8 +19,6 @@ echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env.development
 echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env.development
 echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.development
 echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.development
-
-git pull origin main
 
 docker-compose down
 
