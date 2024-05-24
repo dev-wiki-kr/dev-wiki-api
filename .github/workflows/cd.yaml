@@ -21,6 +21,6 @@ jobs:
           key: ${{ secrets.AWS_EC2_KEY }}
           port: 22
           script: |
-            chmod +x ./deploy.sh
+            chmod +x deploy.sh
 
-            ./deploy.sh
+            sh deploy.sh
