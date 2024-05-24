@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('post')
+@Entity()
 export class Post {
   @PrimaryColumn()
   shortTitle: string;
