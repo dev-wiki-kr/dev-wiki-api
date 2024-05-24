@@ -33,4 +33,4 @@ COPY --from=builder /app/pnpm-lock.yaml ./
 
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+CMD pnpm migration:run && node dist/main
