@@ -19,8 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "node -r ts-node/register ./node_modules/typeorm/cli.js",
-    "typeorm:d": "ts-node -r ts-node/register ./node_modules/typeorm/cli.js -d ./src/migrations/ormconfig.ts",
-    "migration:generate": "pnpm typeorm:d migration:generate src/migrations/CreatePostTable -- -d ./src/migrations/ormconfig.ts",
+    "typeorm:d": "ts-node -r ts-node/register ./node_modules/typeorm/cli.js -d ./ormconfig.ts",
+    "migration:generate": "pnpm typeorm:d migration:generate src/migrations/CreatePostTable -- -d ./ormconfig.ts",
     "migration:run": "pnpm run typeorm:d migration:run"
   },
   "dependencies": {

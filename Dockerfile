@@ -24,8 +24,6 @@ FROM node:18-alpine AS runner
 
 WORKDIR /app
 
-RUN npm install -g pnpm
-
 COPY .env.development ./
 COPY .env.production ./
 COPY --from=builder /app/dist ./dist
@@ -35,4 +33,4 @@ COPY --from=builder /app/pnpm-lock.yaml ./
 
 EXPOSE 3000
 
-CMD pnpm typeorm migration:run -d dist/migrations/ormconfig.js && node dist/main
+CMD ["node", "dist/main"]
