@@ -21,4 +21,4 @@ jobs:
           key: ${{ secrets.AWS_EC2_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu/dev-wiki && git pull origin main && chmod +x deploy.sh && /bin/bash deploy.sh
+            cd /home/ubuntu/dev-wiki && git pull origin main && chmod +x init-letsencrypt.sh && /bin/bash init-letsencrypt.sh && chmod +x deploy.sh && /bin/bash deploy.sh
