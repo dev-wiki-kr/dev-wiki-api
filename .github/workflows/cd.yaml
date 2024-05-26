@@ -22,3 +22,13 @@ jobs:
           port: 22
           script: |
             git pull origin main && chmod +x deploy.sh && /bin/bash deploy.sh
+          env: |
+            DB_USERNAME: ${{ secrets.DB_USERNAME }}
+            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+            DB_SYNCHRONIZE: ${{ secrets.DB_SYNCHRONIZE }}
+            DB_PORT: ${{ secrets.DB_PORT }}
+            DB_NAME: ${{ secrets.DB_USERNAME }}
+            DB_HOST: ${{ secrets.DB_HOST }}
+            POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
