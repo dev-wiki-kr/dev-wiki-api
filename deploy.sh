@@ -22,4 +22,7 @@ echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.development
 
 docker-compose down
 
-docker-compose up -d --build
+docker-compose build
+
+chmod +x ./init-letsencrypt.sh && ./init-letsencrypt.sh
+
