@@ -1,34 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { CurrentUser } from './user.decorator';
 
-@Controller('auth')
+@Controller('oauth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
-  }
-
   @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
+  @UseGuards(AuthGuard('github'))
+  async githubAuth(@Req() req) {}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
+  @Get('/callback')
+  @UseGuards(AuthGuard('github'))
+  async githubAuthRedirect(@CurrentUser() user, @Res() res) {
+    const jwt = user.jwt;
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
+    res.cookie('auth_token', jwt, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 36000000, // 30분
+      sameSite: 'strict',
+    });
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+    res.redirect(`http://localhost:3000`);
   }
 }
