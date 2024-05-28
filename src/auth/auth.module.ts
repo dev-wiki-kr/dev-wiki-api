@@ -5,7 +5,7 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entity/user.entity';
+import { User } from './entities/user.entity';
 import { GithubStrategy } from './auth.strategy';
 
 @Module({
@@ -20,6 +20,7 @@ import { GithubStrategy } from './auth.strategy';
         secret: configService.get('JWT_SECRET_KEY'),
         signOptions: { expiresIn: '30m' },
       }),
+      inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([User]),
   ],

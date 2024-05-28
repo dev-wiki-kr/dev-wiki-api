@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { GithubProfile } from './auth.interface';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(
+    private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly configService: ConfigService,
+  ) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async validateOAuthLogin(profile: GithubProfile) {
+    let user = await this.userRepository.findOne({
+      where: { githubId: profile.id },
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    if (!user) {
+      user = this.userRepository.create({
+        githubId: profile.id,
+        username: profile.username,
+        displayName: profile.displayName,
+        profileUrl: profile.profileUrl,
+      });
+      await this.userRepository.save(user);
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    const payload = {
+      githubId: user.githubId,
+    };
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    return this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_SECRET'),
+    });
   }
 }
