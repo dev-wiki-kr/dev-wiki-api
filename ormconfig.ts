@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
   password: env.DB_PASSWORD,
   database: env.DB_NAME,
   entities: ['dist/**/entities/*.entity.{js,ts}'],
-  synchronize: false,
+  synchronize: env.DB_SYNCHRONIZE === 'true',
   migrations: ['dist/**/migrations/*.js'],
   migrationsTableName: 'migrations',
 });
