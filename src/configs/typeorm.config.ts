@@ -18,7 +18,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       synchronize: this.configService.get('DB_SYNCHRONIZE') === 'true',
       migrations: ['dist/**/migrations/*.js'],
       migrationsTableName: 'migrations',
-      migrationsRun: false,
+      migrationsRun: true,
     };
   }
 }
