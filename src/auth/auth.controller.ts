@@ -23,6 +23,6 @@ export class AuthController {
       sameSite: 'strict',
     });
 
-    res.redirect(`https://devwiki.co.kr:3000`);
+    res.redirect(`https://devwiki.co.kr`);
   }
 }
