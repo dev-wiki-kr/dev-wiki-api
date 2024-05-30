@@ -16,4 +16,7 @@ export class User {
 
   @Column()
   profileUrl: string;
+
+  @Column({ nullable: true })
+  avartarUrl: string;
 }
