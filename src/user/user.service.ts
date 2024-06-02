@@ -40,6 +40,14 @@ export class UserService {
     return user;
   }
 
+  async findUserByUserName(userName: string) {
+    const user = await this.userRepository.findOne({
+      where: { username: userName },
+    });
+
+    return user;
+  }
+
   async getUserProfile(accessToken: string) {
     try {
       const jwt = this.jwtService.verify(accessToken, {
