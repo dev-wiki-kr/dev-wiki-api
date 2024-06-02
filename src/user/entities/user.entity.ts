@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserPost } from './../../user-post/entities/user-post.entity';
+import { Post } from 'src/post/entities/post.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
 export class User {
@@ -8,7 +10,7 @@ export class User {
   @Column({ unique: true })
   githubId: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()
@@ -19,4 +21,7 @@ export class User {
 
   @Column({ nullable: true })
   avartarUrl: string;
+
+  @OneToMany(() => UserPost, (userPost) => userPost.user)
+  post: UserPost[];
 }
