@@ -1,10 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreatePostDto {
-  @IsString()
-  @IsNotEmpty()
-  shortTitle: string;
-
+export class UpdatePostDto {
   @IsString()
   @IsNotEmpty()
   title: string;
@@ -15,5 +11,5 @@ export class CreatePostDto {
 
   @IsString()
   @IsNotEmpty()
-  userName: string;
+  editor: string;
 }
