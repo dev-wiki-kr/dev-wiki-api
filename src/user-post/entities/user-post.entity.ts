@@ -1,19 +1,14 @@
 import { Post } from 'src/post/entities/post.entity';
 import { User } from './../../user/entities/user.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { UserRole } from '../user-post.enum';
 
 @Entity('user_post')
 export class UserPost {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   userId: number;
 
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   postId: number;
 
   @ManyToOne(() => User, (user) => user.post)
@@ -24,6 +19,9 @@ export class UserPost {
   @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: Post;
 
-  @Column()
-  role: 'author' | 'editor';
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+  })
+  role: UserRole;
 }
