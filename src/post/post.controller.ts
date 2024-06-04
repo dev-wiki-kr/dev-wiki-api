@@ -1,3 +1,4 @@
+import { UpdatePostDto } from './dto/update-post.dto';
 import {
   Controller,
   Get,
@@ -5,6 +6,7 @@ import {
   Body,
   Param,
   ValidationPipe,
+  Patch,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -14,17 +16,25 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
-  create(@Body(ValidationPipe) createPostDto: CreatePostDto) {
-    return this.postService.create(createPostDto);
+  async create(@Body(ValidationPipe) createPostDto: CreatePostDto) {
+    return await this.postService.create(createPostDto);
   }
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  async findAll() {
+    return await this.postService.findAll();
   }
 
   @Get(':shortTitle')
-  findOne(@Param('shortTitle') shortTitle: string) {
-    return this.postService.findOne(shortTitle);
+  async findOne(@Param('shortTitle') shortTitle: string) {
+    return await this.postService.findOne(shortTitle);
+  }
+
+  @Patch(':shortTitle')
+  async update(
+    @Body(ValidationPipe) updatePostDto: UpdatePostDto,
+    @Param('shortTitle') shortTitle: string,
+  ) {
+    return await this.postService.update(updatePostDto, shortTitle);
   }
 }
