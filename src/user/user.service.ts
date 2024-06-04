@@ -4,7 +4,6 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { GithubProfile } from 'src/auth/auth.interface';
-import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

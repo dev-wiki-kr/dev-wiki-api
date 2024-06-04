@@ -11,14 +11,15 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { Post } from './entities/post.entity';
 import { UserService } from 'src/user/user.service';
 import { UserPost } from 'src/user-post/entities/user-post.entity';
+import { UserRole } from 'src/user-post/user-post.enum';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post)
-    @InjectRepository(UserPost)
     private readonly postRepository: Repository<Post>,
     private readonly userService: UserService,
+    @InjectRepository(UserPost)
     private readonly userPostRepository: Repository<UserPost>,
   ) {}
 
@@ -41,7 +42,7 @@ export class PostService {
       const userPost = this.userPostRepository.create({
         user,
         post: savedPost,
-        role: 'author',
+        role: UserRole.AUTHOR,
       });
       await this.userPostRepository.save(userPost);
 
@@ -57,10 +58,18 @@ export class PostService {
 
   async update(updatePostDto: UpdatePostDto, shortTitle: string) {
     try {
-      const post = await this.findOne(shortTitle);
+      const post = await this.postRepository.findOne({
+        where: { shortTitle },
+        relations: ['user', 'user.user'],
+      });
 
       post.title = updatePostDto.title;
       post.content = updatePostDto.content;
+
+      const savedPost = await this.postRepository.save({
+        ...post,
+        user: undefined,
+      });
 
       if (
         !post.user.some(
@@ -74,17 +83,20 @@ export class PostService {
         const userPost = this.userPostRepository.create({
           user,
           post,
-          role: 'editor',
+          role: UserRole.EDITOR,
         });
 
+        console.log(userPost);
         await this.userPostRepository.save(userPost);
       }
 
-      return this.postRepository.save(post);
+      return savedPost;
     } catch (err) {
       if (err.code === '23505') {
         throw new ConflictException('존재하는 게시물 id입니다.');
       }
+
+      console.log(err);
 
       throw new InternalServerErrorException();
     }
