@@ -52,6 +52,8 @@ export class PostService {
         throw new ConflictException('존재하는 게시물 id입니다.');
       }
 
+      console.log(err);
+
       throw new InternalServerErrorException();
     }
   }
