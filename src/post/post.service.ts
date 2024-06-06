@@ -119,4 +119,19 @@ export class PostService {
 
     return post;
   }
+
+  async findAllPostTitle() {
+    try {
+      const titles = await this.postRepository
+        .createQueryBuilder('post')
+        .select('post.shortTitle')
+        .getMany();
+
+      return titles;
+    } catch (err) {
+      console.log(err);
+
+      throw new InternalServerErrorException();
+    }
+  }
 }

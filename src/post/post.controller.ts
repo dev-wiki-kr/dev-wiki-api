@@ -25,6 +25,11 @@ export class PostController {
     return await this.postService.findAll();
   }
 
+  @Get('titles')
+  async getAllPostTitle() {
+    return await this.postService.findAllPostTitle();
+  }
+
   @Get(':shortTitle')
   async findOne(@Param('shortTitle') shortTitle: string) {
     return await this.postService.findOne(shortTitle);
