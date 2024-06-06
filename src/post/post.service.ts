@@ -27,6 +27,8 @@ export class PostService {
     try {
       const { title, shortTitle, userName, content } = createPostDto;
 
+      console.log({ title, shortTitle, userName, content });
+
       const user = await this.userService.findUserByUserName(userName);
       if (!user) {
         throw new NotFoundException('유저 정보를 찾지 못했습니다.');
