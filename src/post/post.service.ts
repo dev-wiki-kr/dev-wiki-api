@@ -12,6 +12,7 @@ import { Post } from './entities/post.entity';
 import { UserService } from 'src/user/user.service';
 import { UserPost } from 'src/user-post/entities/user-post.entity';
 import { UserRole } from 'src/user-post/user-post.enum';
+import { RevalidationService } from 'src/revalidation/revalidation.service';
 
 @Injectable()
 export class PostService {
@@ -21,6 +22,7 @@ export class PostService {
     private readonly userService: UserService,
     @InjectRepository(UserPost)
     private readonly userPostRepository: Repository<UserPost>,
+    private readonly revalidationService: RevalidationService,
   ) {}
 
   async create(createPostDto: CreatePostDto) {
@@ -47,6 +49,8 @@ export class PostService {
         role: UserRole.AUTHOR,
       });
       await this.userPostRepository.save(userPost);
+
+      this.revalidationService.revalidatePath(`/post/[topic]`, true);
 
       return newPost;
     } catch (err) {
@@ -93,6 +97,8 @@ export class PostService {
         console.log(userPost);
         await this.userPostRepository.save(userPost);
       }
+
+      this.revalidationService.revalidatePath(`/post/${shortTitle}`);
 
       return savedPost;
     } catch (err) {

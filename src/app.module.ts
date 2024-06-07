@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { RevalidationModule } from './revalidation/revalidation.modue';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     PostModule,
     AuthModule,
     UserModule,
+    RevalidationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

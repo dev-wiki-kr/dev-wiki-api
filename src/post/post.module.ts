@@ -1,3 +1,4 @@
+import { RevalidationModule } from './../revalidation/revalidation.modue';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -13,6 +14,7 @@ import { UserModule } from 'src/user/user.module';
     TypeOrmModule.forFeature([Post]),
     TypeOrmModule.forFeature([UserPost]),
     UserModule,
+    RevalidationModule,
   ],
 })
 export class PostModule {}
