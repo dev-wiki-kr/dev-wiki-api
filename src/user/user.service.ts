@@ -1,6 +1,12 @@
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { GithubProfile } from 'src/auth/auth.interface';
@@ -16,35 +22,48 @@ export class UserService {
   ) {}
 
   async createUser(profile: GithubProfile) {
-    const { id, username, displayName, profileUrl, photos } = profile;
+    try {
+      const { id, username, displayName, profileUrl, photos } = profile;
 
-    const user = this.userRepository.create({
-      githubId: id,
-      username,
-      displayName,
-      profileUrl,
-      avartarUrl: photos[0].value,
-    });
+      const user = this.userRepository.create({
+        githubId: id,
+        username,
+        displayName,
+        profileUrl,
+        avartarUrl: photos[0].value,
+      });
 
-    this.userRepository.save(user);
+      this.userRepository.save(user);
 
-    return user;
+      return user;
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerErrorException();
+    }
   }
 
   async findUserById(id: string) {
-    const user = await this.userRepository.findOne({
-      where: { githubId: id },
-    });
+    try {
+      const user = await this.userRepository.findOne({
+        where: { githubId: id },
+      });
 
-    return user;
+      return user;
+    } catch (err) {
+      throw new InternalServerErrorException();
+    }
   }
 
   async findUserByUserName(userName: string) {
-    const user = await this.userRepository.findOne({
-      where: { username: userName },
-    });
+    try {
+      const user = await this.userRepository.findOne({
+        where: { username: userName },
+      });
 
-    return user;
+      return user;
+    } catch (err) {
+      throw new NotFoundException();
+    }
   }
 
   async getUserProfile(accessToken: string) {
