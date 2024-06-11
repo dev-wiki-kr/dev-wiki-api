@@ -3,8 +3,8 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Req,
-  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Request } from 'express';
@@ -26,6 +26,15 @@ export class UserController {
 
     try {
       return this.userService.getUserProfile(accessToken);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Get(':userName')
+  async getUserByUserName(@Param('userName') userName: string) {
+    try {
+      return this.userService.findUserByUserName(userName);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
