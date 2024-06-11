@@ -117,13 +117,31 @@ export class PostService {
   }
 
   async findOne(shortTitle: string) {
-    const post = await this.postRepository.findOneBy({ shortTitle });
+    const post = await this.postRepository
+      .createQueryBuilder('post')
+      .where('post.shortTitle = :shortTitle', { shortTitle })
+      .leftJoinAndSelect('post.user', 'userPost')
+      .leftJoinAndSelect('userPost.user', 'user')
+      .getOne();
 
     if (!post) {
       throw new NotFoundException('게시물을 찾지 못했습니다.');
     }
 
-    return post;
+    const transformedPost = {
+      ...post,
+      user: post.user.map((userPost) => ({
+        id: userPost.user.id,
+        githubId: userPost.user.githubId,
+        username: userPost.user.username,
+        displayName: userPost.user.displayName,
+        profileUrl: userPost.user.profileUrl,
+        avartarUrl: userPost.user.avartarUrl,
+        role: userPost.role,
+      })),
+    };
+
+    return transformedPost;
   }
 
   async findAllPostTitle() {
