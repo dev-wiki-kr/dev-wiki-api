@@ -13,14 +13,14 @@ export class User {
   @Column({ unique: true })
   username: string;
 
-  @Column()
-  displayName: string;
+  @Column({ nullable: true })
+  displayName: string | null;
 
   @Column()
   profileUrl: string;
 
   @Column({ nullable: true })
-  avartarUrl: string;
+  avartarUrl: string | null;
 
   @OneToMany(() => UserPost, (userPost) => userPost.user)
   post: UserPost[];
