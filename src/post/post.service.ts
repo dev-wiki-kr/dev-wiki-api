@@ -102,6 +102,11 @@ export class PostService {
       }
 
       this.revalidationService.revalidatePath(`/post/${shortTitle}`);
+      this.searchService.indexPosts({
+        title: updatePostDto.title,
+        shortTitle,
+        content: updatePostDto.content,
+      });
 
       return savedPost;
     } catch (err) {
