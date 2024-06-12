@@ -11,7 +11,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('wiki-api');
   await app.listen(8080);
 }
 bootstrap();
