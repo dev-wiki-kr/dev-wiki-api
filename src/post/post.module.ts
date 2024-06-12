@@ -6,6 +6,7 @@ import { PostController } from './post.controller';
 import { Post } from './entities/post.entity';
 import { UserPost } from 'src/user-post/entities/user-post.entity';
 import { UserModule } from 'src/user/user.module';
+import { SearchModule } from 'src/search/search.module';
 
 @Module({
   controllers: [PostController],
@@ -15,6 +16,7 @@ import { UserModule } from 'src/user/user.module';
     TypeOrmModule.forFeature([UserPost]),
     UserModule,
     RevalidationModule,
+    SearchModule,
   ],
 })
 export class PostModule {}

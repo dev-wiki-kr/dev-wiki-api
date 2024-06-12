@@ -9,6 +9,7 @@ import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { RevalidationModule } from './revalidation/revalidation.modue';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RevalidationModule } from './revalidation/revalidation.modue';
     AuthModule,
     UserModule,
     RevalidationModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
