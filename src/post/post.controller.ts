@@ -7,6 +7,7 @@ import {
   Param,
   ValidationPipe,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -28,6 +29,11 @@ export class PostController {
   @Get('titles')
   async getAllPostTitle() {
     return await this.postService.findAllPostTitle();
+  }
+
+  @Get('latest')
+  async findLatest(@Query('count') count: number) {
+    return await this.postService.findLatestPosts(count);
   }
 
   @Get(':shortTitle')

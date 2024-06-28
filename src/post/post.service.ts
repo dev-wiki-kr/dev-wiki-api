@@ -166,4 +166,19 @@ export class PostService {
       throw new InternalServerErrorException();
     }
   }
+
+  async findLatestPosts(count: number = 10) {
+    try {
+      const latestPosts = await this.postRepository
+        .createQueryBuilder('post')
+        .orderBy('post.createdAt', 'DESC')
+        .take(count)
+        .getMany();
+
+      return latestPosts;
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerErrorException();
+    }
+  }
 }
