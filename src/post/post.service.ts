@@ -24,7 +24,6 @@ export class PostService {
     @InjectRepository(UserPost)
     private readonly userPostRepository: Repository<UserPost>,
     private readonly revalidationService: RevalidationService,
-    private readonly searchService: SearchService,
   ) {}
 
   async create(createPostDto: CreatePostDto) {
@@ -53,7 +52,6 @@ export class PostService {
       await this.userPostRepository.save(userPost);
 
       this.revalidationService.revalidatePath(`/post/[topic]`, true);
-      this.searchService.indexPosts({ title, shortTitle, content });
 
       return newPost;
     } catch (err) {
@@ -102,11 +100,6 @@ export class PostService {
       }
 
       this.revalidationService.revalidatePath(`/post/${shortTitle}`);
-      this.searchService.indexPosts({
-        title: updatePostDto.title,
-        shortTitle,
-        content: updatePostDto.content,
-      });
 
       return savedPost;
     } catch (err) {
