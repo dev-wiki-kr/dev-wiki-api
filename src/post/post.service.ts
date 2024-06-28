@@ -178,6 +178,7 @@ export class PostService {
       return latestPosts;
     } catch (err) {
       console.log(err);
+
       throw new InternalServerErrorException();
     }
   }
