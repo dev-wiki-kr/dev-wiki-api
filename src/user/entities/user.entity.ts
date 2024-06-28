@@ -1,5 +1,4 @@
 import { UserPost } from './../../user-post/entities/user-post.entity';
-import { Post } from 'src/post/entities/post.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
