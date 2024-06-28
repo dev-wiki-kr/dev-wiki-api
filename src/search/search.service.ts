@@ -13,7 +13,7 @@ export class SearchService {
   async getSuggestions(query: string) {
     const suggestions = await this.postRepository
       .createQueryBuilder('posts')
-      .where('posts.title LIKE :query', { query: `%${query}%` })
+      .where('LOWER(posts.title) LIKE LOWER(:query)', { query: `%${query}%` })
       .getMany();
 
     return suggestions;
