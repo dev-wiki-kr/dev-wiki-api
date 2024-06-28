@@ -175,7 +175,12 @@ export class PostService {
         .take(count)
         .getMany();
 
-      return latestPosts;
+      return latestPosts.map((post) => {
+        return {
+          url: `https://devwiki.co.kr/post/${post.shortTitle}`,
+          title: post.title,
+        };
+      });
     } catch (err) {
       console.log(err);
 
