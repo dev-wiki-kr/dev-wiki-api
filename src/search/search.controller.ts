@@ -7,6 +7,6 @@ export class SearchController {
 
   @Get('/autocomplete')
   async getAutoCompleteTitle(@Query('q') q: string) {
-    return this.searchService.suggestTitles(q);
+    return await this.searchService.getSuggestions(q);
   }
 }
