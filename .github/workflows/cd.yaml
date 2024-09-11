@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   deploy:
@@ -13,12 +14,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: extract envs
+        run: |
+          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
+            echo "BRANCH=main" >> $GITHUB_ENV
+            echo "ENVIROMENT=production" >> $GITHUB_ENV
+            echo "AWS_HOST=${{ secrets.AWS_EC2_HOST }}" >> $GITHUB_ENV
+            echo "AWS_USER=${{ secrets.AWS_EC2_USER }}" >> $GITHUB_ENV
+            echo "AWS_KEY<<EOF" >> $GITHUB_ENV
+            echo "${{ secrets.AWS_EC2_KEY }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV     
+          elif [ ${{ github.ref }} = 'refs/heads/dev' ]; then
+            echo "BRANCH=dev" >> $GITHUB_ENV
+            echo "ENVIROMENT=development" >> $GITHUB_ENV
+            echo "AWS_HOST=${{ secrets.DEV_AWS_EC2_HOST }}" >> $GITHUB_ENV
+            echo "AWS_USER=${{ secrets.DEV_AWS_EC2_USER }}" >> $GITHUB_ENV
+            echo "AWS_KEY<<EOF" >> $GITHUB_ENV
+            echo "${{ secrets.DEV_AWS_EC2_KEY }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV               
+          else
+            exit 1
+          fi
+
+      - name: Export organization environment variables
+        run: |
+          npx @dev-wiki-kr/gha-tools@latest inject-env ./envs --env=production
+          mv .env.service .env.production
+          cat .env.production
+
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v0.1.9
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.AWS_EC2_HOST }}
-          username: ${{ secrets.AWS_EC2_USER }}
-          key: ${{ secrets.AWS_EC2_KEY }}
+          host: ${{ env.AWS_HOST }}
+          username: ${{ env.AWS_USER }}
+          key: ${{ env.AWS_KEY }}
           port: 22
           script: |
-            git pull origin main && chmod +x deploy.sh && /bin/bash deploy.sh
+            git pull origin ${{ env.BRANCH }} && docker compose down && docker compose up -d --build
