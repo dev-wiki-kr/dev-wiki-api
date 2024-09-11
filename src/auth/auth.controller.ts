@@ -2,10 +2,14 @@ import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from './user.decorator';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('oauth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get()
   @UseGuards(AuthGuard('github'))
@@ -23,6 +27,6 @@ export class AuthController {
       sameSite: 'strict',
     });
 
-    res.redirect(`https://devwiki.co.kr`);
+    res.redirect(this.configService.get('CLIENT_URL'));
   }
 }
