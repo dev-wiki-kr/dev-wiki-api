@@ -14,6 +14,7 @@ import { UserService } from 'src/user/user.service';
 import { UserPost } from 'src/user-post/entities/user-post.entity';
 import { UserRole } from 'src/user-post/user-post.enum';
 import { RevalidationService } from 'src/revalidation/revalidation.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PostService {
@@ -24,6 +25,7 @@ export class PostService {
     @InjectRepository(UserPost)
     private readonly userPostRepository: Repository<UserPost>,
     private readonly revalidationService: RevalidationService,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(createPostDto: CreatePostDto) {
@@ -170,7 +172,7 @@ export class PostService {
 
       return latestPosts.map((post) => {
         return {
-          url: `https://devwiki.co.kr/post/${post.shortTitle}`,
+          url: `${this.configService.get('CLIENT_URL')}/post/${post.shortTitle}`,
           title: post.title,
         };
       });
