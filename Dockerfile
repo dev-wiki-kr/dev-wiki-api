@@ -33,4 +33,4 @@ COPY --from=builder /app/pnpm-lock.yaml ./
 
 EXPOSE 8080
 
-CMD ["node", "dist/main"]
+CMD ["node", "--max-old-space-size=4096", "dist/main"]
