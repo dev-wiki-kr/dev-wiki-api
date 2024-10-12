@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { RevalidationModule } from './revalidation/revalidation.modue';
 import { SearchModule } from './search/search.module';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { SearchModule } from './search/search.module';
     UserModule,
     RevalidationModule,
     SearchModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
