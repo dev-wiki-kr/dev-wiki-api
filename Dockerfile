@@ -17,6 +17,7 @@ RUN npm install -g pnpm
 COPY --from=dependencies /app/node_modules ./node_modules
 
 COPY . .
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 RUN pnpm build
 
@@ -33,4 +34,4 @@ COPY --from=builder /app/pnpm-lock.yaml ./
 
 EXPOSE 8080
 
-CMD ["node", "--max-old-space-size=4096", "dist/main"]
+CMD ["node", "dist/main"]
